@@ -5,9 +5,9 @@ SoftwareSerial mySerial(52, 3);
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
 int getFingerprintIDez();
-String Degisken;
+String Degisken; // Hex Tutan Degisken
 uint8_t id;
-int Kontrol = 0;
+int Kontrol = 0; // IF ELSE kontrolü için
 void setup()  
 {
                                                                 Serial.begin(9600);
@@ -32,10 +32,10 @@ uint8_t readnumber(void) {
 }
 
 void loop()                     // run over and over again
-{ 
+{ // AÇIKLAMALAR FONKSİYONLARIN İÇİNDE BULUNUYOR
   
   char Kontrol = Serial.read();
-  // 1 = 2 = Yoklama Kontrol        
+  // 2 = Yoklama Kontrol        
   if (Kontrol == '2'){
   ParmakiziSensorunuDogrula();
   temizle();
@@ -75,10 +75,11 @@ void ParmakiziSensorunuDogrula(){
   
 }}
 
-void parmakAL(){                                                
+void parmakAL(){                        
+  // PARMAK İZİNİ ALIR                ID ALMA İŞLEMİNİ ÇIKARTTIM 1 NUMARALI ID YE BASIYOR     
                                                                       Serial.println("Parmak İzi Kaydı İçin Hazır!");
                                                                       Serial.println("Lütfen (1 ile 127) Arasında Kaydetmek İstediğiniz ID NO Giriniz.");
-                                                                      id = 1;
+                                                                      id = 1; 
                                                                       if (id == 0) {// ID #0 not allowed, try again!
                                                                          return;
                                                                       }
@@ -89,7 +90,7 @@ void parmakAL(){
 }
 
 
-uint8_t parmakKontrol() {
+uint8_t parmakKontrol() {  // ID BELİRLENDİKTEN SONRA PARMAK BASMANIZI BEKLEYEN OKUYAN KISIM
 
                                                                     int p = -1;
                                                                     Serial.print("Yoklama girişi için parmak izi bekleniyor. as #"); Serial.println(id);
@@ -162,6 +163,7 @@ uint8_t parmakKontrol() {
 
 
 void temizle(){
+  // 1 NUMARALI ID ÜZERİNDEKİ PARMAK İZİNİ TEMİZLER.
 uint8_t id = 1;
                                                                     if (id == 0) {// ID #0 not allowed, try again!
                                                                        return;
@@ -173,7 +175,7 @@ uint8_t id = 1;
                                                                     deleteFingerprint(id);
 }
 
-uint8_t deleteFingerprint(uint8_t id) {
+uint8_t deleteFingerprint(uint8_t id) {  // 1 NUMARALI ID DEKİ PARMAK İZİNİ SİLMEK İÇİN GEREKLİ FONKSİYON
   uint8_t p = -1;
   
                                                                     p = finger.deleteModel(id);
@@ -196,7 +198,7 @@ uint8_t deleteFingerprint(uint8_t id) {
 }
 
 
-void hexAL(){
+void hexAL(){ // BU FONKSİYON HEX ALMAK İÇİN 1 NUMARALI ID Yİ ÇAĞIRIYOR.
 
 downloadFingerprintTemplate(1);
 
@@ -262,7 +264,7 @@ uint8_t downloadFingerprintTemplate(uint16_t id)
       uindx = index + 9;
   }
   Degisken = "";
-  for (int i = 0; i < 256; ++i) {
+  for (int i = 0; i < 256; ++i) { // 2 li 2 li yazdırdığı için 256*2 UZUNLUĞUNDA OLUYOR.
       //Serial.print("0x");
       Degisken = Degisken + printHex(fingerTemplate[i], 2);
       //Serial.print(", ");
@@ -274,7 +276,7 @@ uint8_t downloadFingerprintTemplate(uint16_t id)
 
 
 
-String printHex(int num, int precision) {
+String printHex(int num, int precision) { // HEX YAZDIRIYOR AMA AYNI ZAMANDA BÜTÜN HEX DOSYASINI OLUŞTURUYOR
     char tmp[16];
     char format[128];
  
